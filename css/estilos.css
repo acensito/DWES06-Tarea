@@ -1,0 +1,59 @@
+/* ESTILOS AMBITO GENERAL */
+html {
+    -webkit-font-smoothing: antialiased !important;
+    background-color: #c1c5c9; /*#e6e9e9;*/
+}
+
+body {
+    background-color: #ffffff;
+    border-radius: 5px;
+    color: #545454;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5em;
+    margin: 2em auto;
+    max-width: 800px;
+    padding: 4em 2em 1em;
+}
+
+h1 {
+    text-align: center;
+}
+
+/* ESTILOS TABLA USUARIOS */
+.container.users {
+    padding: 0;
+    width: 100%;
+}
+
+.table > tbody > tr > td {
+     vertical-align: middle;
+     text-align: center;
+}
+
+.table > tbody > tr > th {
+     text-align: center;
+}
+
+/* ESTILOS FORMULARIO DE REGISTRO */
+.container.reg-visible {
+    padding: 0;
+    width: 50%;
+}
+
+.container.reg-hidden{
+    display: none;
+}
+
+/* ESTILOS PIE DE PAGINA */
+footer {
+    margin-top: 1em;
+    font-size: 0.8em;
+    text-align: center;
+}
+
+
+
+
+
+

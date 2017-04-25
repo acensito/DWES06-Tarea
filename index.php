@@ -29,7 +29,7 @@ require_once ("include/fxajax.inc.php");
     <meta charset="utf-8">
     <title>DWES - Tarea 6 - Aplicaciones web dinámicas: PHP y Javascript </title>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
     <link type="text/css" href="css/estilos.css" rel="stylesheet" />
 

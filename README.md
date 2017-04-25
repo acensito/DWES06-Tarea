@@ -21,15 +21,18 @@ Las librerías utilizadas para la tarea deben incluirse dentro del propio proyec
 
 ##
 
-## Criterios de corrección:
+## **Criterios de corrección:**
 
-| La obtención de la nota de la tarea se hará según los siguientes criterios mostrados en la siguiente tabla: |
-| --- |
+**NOTA\_TOTAL\_TAREA 1 = 0,5\*NOTA\_PARTES1y2 + 0,5\*NOTA\_PARTE3**
+
 | **Puntuación Máxima** | **Criterio** |
-| Sin calificación | Tarea no entregada o en borrador. |
-| 0 | La tarea entregada no se corresponde con lo que se pide.El fichero está corrupto o no se puede abrir.La tarea se ha entregado fuera de plazo.La tarea ha sido copiada.La tarea no se ha resuelto usando la tecnología solicitada. |
-| 4 | La tarea no se puede ejecutar o se ha modificado la estructura de la base de datos. |
+| --- | --- |
+| Sin calificación | Tarea no entregada. |
+| 0 | La tarea entregada no se corresponde con lo que se  pide.El fichero está corrupto o no se puede abrir.La tarea se ha entregado fuera de plazo.La tarea ha sido copiada.No se han usado arrays para desarrollar la tarea. |
+| 4 | La tarea se realiza usando bases de datos, Sesiones, Cookies, AJAX, etc que se trabajarán en unidades posteriores.La tarea no se puede ejecutar. |
 | 10 | La tarea entregada y que funcione correctamente (que no corresponda a ninguno de los apartados mencionados anteriormente) será corregida según la siguiente valoración: |
+
+** **
 |  Se valorará con la puntuación señalada la consecución de cada uno de los siguientes ítems:
 
 | **Clases** | Crear correctamente la clase DB. | 1 |

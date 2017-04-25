@@ -33,7 +33,7 @@ class DB {
      */
     private function __construct(){
         
-        $db_host   = 'localhost';    //  hostname por defecto: localhost/127.0.0.1 - 192.168.0.250 en red
+        $db_host   = '192.168.0.250';    //  hostname por defecto: localhost/127.0.0.1 - 192.168.0.250 en red
         $db_name   = 'foro3';            //  nombre base datos
         $db_user   = 'dwes';             //  usuario
         $user_pw   = 'dwes';             //  contraseÃ±a
@@ -82,7 +82,8 @@ class DB {
         try {
             //Creamos una conexión
             self::conexion();
-            //Creamos la sentencia sql correspondiente
+            
+            //Preparamos la sentencia SQL
             $sql = 'SELECT login, password, email, bloqueado FROM foreros';
             //Preparamos la consulta
             $resultado = self::$instancia->prepare($sql);
@@ -116,6 +117,7 @@ class DB {
         try {
             //Creamos una conexión
             self::conexion();
+            
             //Creamos la sentencia sql correspondiente
             $sql = 'DELETE FROM foreros WHERE login = :login';
             //Preparamos la consulta
@@ -142,7 +144,8 @@ class DB {
         try {
             //Creamos una conexión
             self::conexion();
-            //Realizamos la consulta preparada
+            
+            //Preparamos la sentencia SQL
             $sql = "SELECT login, password, email, bloqueado FROM foreros WHERE login=:login";
             //Llamamos a la preparacion de la consulta a la funcion correspondiente
             $row = self::$instancia->prepare($sql);
@@ -159,6 +162,7 @@ class DB {
                 $usuario = $row->fetch();
             }
             
+            //Devolvemos el resultado
             return $usuario;
             
         //En caso de existir errores, los capturamos y los mostramos
@@ -168,25 +172,23 @@ class DB {
     }
     
     public static function insertarUsuario($valores) {
+        //Encriptamos la contraseña recibida
         $valores['pass1'] = crypt($valores['pass1'], '$1$H0nXwAHv$Db/qca/Yq.hubsry5S7bf1');
 
         try {
             //Creamos una conexión
             self::conexion();
             
-            // Preparamos la consulta con parámetros, ya se indica que esta bloqueado
+            //Preparamos la sentencia SQL
             $sql = "INSERT INTO foreros (login, password, email, bloqueado) VALUES (?, ?, ?, 1)";
-
-            //Conectamos por singleton a la base de datos
-            $con = DB::conexion();
-            //Comprobamos si existe usuario con dicho login
-            $resultado = $con->prepare($sql);
+  
+            //Preparamos la consulta
+            $resultado = self::$instancia->prepare($sql);
             
-            // Parámetros de la consulta
+            //Parámetros de la consulta
             $resultado->bindParam(1, $valores['login']);
             $resultado->bindParam(2, $valores['pass1']);
             $resultado->bindParam(3, $valores['email']);
-            //$resultado->bindParam(":bloqueado", $bloqueado);
 
             //Ejecutamos la consulta, añadimos el usuario
             $resultado->execute();
@@ -196,16 +198,36 @@ class DB {
             echo "<p class='errcon'>Se ha producido error " . $e->getMessage() . "</p>";
         }
     }
-
-
-//    /**
-//     * Metodo que devuelve una consulta preparada
-//     * @param type $sql
-//     */
-//    public static function ejecutaConsulta($sql){
-//        $resultado = self::$instancia->prepare($sql);
-//        $resultado->execute();
-//    }
+    
+    public static function actualizarUsuario($valores){
+        //Encriptamos la contraseña recibida
+        $password = crypt($valores['pass1E'], '$1$H0nXwAHv$Db/qca/Yq.hubsry5S7bf1');
+        
+        try {
+            //Creamos una conexión
+            self::conexion();
+            
+            //Preparamos la sentencia SQL
+            $sql = "UPDATE foreros SET login=:login, password=:pass, email=:email, bloqueado=:bloqueado WHERE login=:user";
+            
+            //Preparamos la consulta
+            $resultado = self::$instancia->prepare($sql);
+            
+            //Parametros de la consulta
+            $resultado->bindParam(":login", $valores['loginE']);
+            $resultado->bindParam(":pass", $password);
+            $resultado->bindParam(":email", $valores['emailE']);
+            $resultado->bindParam(":bloqueado", $valores['bloqueadoE']);
+            $resultado->bindParam(":user", $valores['loginM']);
+            
+            //Ejecutamos la consulta, actualizamos el usuario
+            $resultado->execute();
+            
+        } catch (PDOException $e) { //En caso de errores
+            //Se captura el error y se muestra
+            echo "<p class='errcon'>Se ha producido error " . $e->getMessage() . "</p>";
+        }
+    }
     
     /**
      * Método que evita que por seguridad el objeto sea clonado

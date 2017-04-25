@@ -25,6 +25,44 @@ function renderizaUsuarios(){
 }
 
 /**
+ * Función a la que se le indica un usuario en concreto y que tras la confirmación
+ * del eliminado del mismo, procede a ello.
+ * 
+ * @param {type} usuario nombre del usuario a eliminar
+ */
+function eliminaUser(usuario){
+    //Preguntamos si desea realmente eliminar a dicho usuario y si es positivo,
+    //procedemos a eliminar el mismo llamando a la función correspondiente.
+    if (confirm('¿Desea eliminar al forero ' + usuario + '?')) {
+        //Llamamos a la funcion correspondiente para eliminar usuario
+        xajax_eliminarUsuario(usuario);
+        //Mandamos mensaje de feedback
+        alert("Se ha procedido a eliminar al usuario " + usuario);
+    }
+}
+
+/**
+ * Funcion que recoge los datos del formulario de registro y los envia para que
+ * sean validados y actualiza la tabla
+ * 
+ */
+function registrarUser() {
+    //Se solicita una respuesta sincrona con el servidor, enviando como parametros
+    //los datos del formulario
+    var respuesta = xajax.request({xjxfun:"validarUsuario"}, {mode:'synchronous', parameters: [xajax.getFormValues("form-registro")]});
+    
+    //Si la respuesta es positiva (se ha grabado bien)
+    if (respuesta) {
+        //Lanzamos mensaje de feedback
+        alert('Se ha creado el nuevo usuario. Puede verlo disponible en la tabla de usuarios');
+        //Ocultamos el formulario de registro
+        mostrarRegistro();
+    }
+    //Actualizamos la tabla de usuarios para que puedan verse los cambios
+    renderizaUsuarios();
+}
+
+/**
  * Función mostrarRegistro() para mostrar/ocultar el formulario de registro
  */
 function mostrarRegistro(){
@@ -32,6 +70,8 @@ function mostrarRegistro(){
     var visibilidad = document.getElementById('registro').className;
     //Si la clase indica que esta oculto, hacemos que sea visible
     if (visibilidad === 'container reg-hidden') {
+        //Ocultamos el formulario de Editar usuario, por si estuviera activo
+        document.getElementById('modificar').setAttribute('class', 'container reg-hidden');
         //Hacemos visible el contenedor
         document.getElementById('registro').setAttribute('class', 'container reg-visible');
         //Cambiamos el estilo del boton pulsado
@@ -48,7 +88,7 @@ function mostrarRegistro(){
         eliminaMsgValidacion();
         //Ocultamos el contenedor
         document.getElementById('registro').setAttribute('class', 'container reg-hidden');
-        //Cambiamos el estilo del boton pulsado
+        //Cambiamos el estilo del boton de registro
         document.getElementById('btn-registro').setAttribute('class', 'btn btn-primary');
         //Cambiamos el texto del boton pulsado a su estado original
         document.getElementById('btn-registro').childNodes[0].nodeValue = 'Crear nuevo usuario';
@@ -56,47 +96,85 @@ function mostrarRegistro(){
 }
 
 /**
- * Función mostrarRegistro() para mostrar/ocultar el formulario de registro
+ * Función que muestra el formulario de edición del usuario pasado por parametro
+ * del que se recuperarán los datos.
+ * 
+ * @param {type} login
+ * @returns {undefined}
  */
-function mostrarEdicion(){
-
+function mostrarEdicion(login){
+    //Ocultamos el formulario de registro, por si estuviera activo
+    document.getElementById('registro').setAttribute('class', 'container reg-hidden');
+    //Cambiamos el estilo del boton de registro
+    document.getElementById('btn-registro').setAttribute('class', 'btn btn-primary');
+    //Cambiamos el texto del boton pulsado a su estado original
+    document.getElementById('btn-registro').childNodes[0].nodeValue = 'Crear nuevo usuario';
+    //Hacemos visible el contenedor de edicion
+    document.getElementById('modificar').setAttribute('class', 'container reg-visible');
+    //Asignamos el foco en el primer campo del formulario
+    document.getElementById('loginE').focus();
+    eliminaMsgEdicion();
+    //Recuperamos los datos para asignarlos al formulario
+    xajax_editarUsuario(login);
 }
 
 /**
- * Función a la que se le indica un usuario en concreto y que tras la confirmación
- * del eliminado del mismo, procede a ello.
+ * Funcion que procede al guardado/actualizado del user a modificar cuando se
+ * pulsa sobre el boton guardar.
  * 
- * @param {type} usuario nombre del usuario a eliminar
  */
-function eliminaUser(usuario){
-    //Preguntamos si desea realmente eliminar a dicho usuario y si es positivo,
-    //procedemos a eliminar el mismo llamando a la función correspondiente.
-    if (confirm('¿Desea eliminar al forero ' + usuario + '?')) {
-        //Llamamos a la funcion correspondiente para eliminar usuario
-        xajax_eliminarUsuario(usuario);
-        
-        alert("Se ha procedido a eliminar al usuario " + usuario);
-    }
-}
-
-
-function registrarUser() {
-
-    var respuesta = xajax.request({xjxfun:"validarUsuario"}, {mode:'synchronous', parameters: [xajax.getFormValues("form-registro")]});
+function guardaUser(){
+    //Se solicita una respuesta sincrona con el servidor, al que se le mandan 
+    //los datos del formulario para validar
+    var respuesta = xajax.request({xjxfun:"validarEdicion"}, {mode:'synchronous', parameters: [xajax.getFormValues("form-editar")]});
     
+    //Si la respuesta es correcta (se ha guardado correctamente el usuario) 
     if (respuesta) {
-        alert('Se ha creado el nuevo usuario. Puede verlo disponible en la tabla de usuarios');
-        mostrarRegistro();
+        //Lanzamos mensaje de feedback
+        alert('Se ha se ha modificado el usuario. Puede verlo disponible en la tabla de usuarios');
+        //ocultamos el formulario de edicion
+        ocultarEdicion();
     }
+    //Actualizamos la tabla con los datos más actuales
+    renderizaUsuarios();
 }
 
+/**
+ * Función que oculta el formulario de edición de usuario al pulsar en cancelar
+ * 
+ */
+function ocultarEdicion(){
+    //Ocultamos el contenedor
+    document.getElementById('modificar').setAttribute('class', 'container reg-hidden');
+    //Borramos rastros de mensajes de validacion previos
+    eliminaMsgEdicion();
+}
 
+/**
+ * Función que elimina los mensajes de validación (ya sea al pulsar limpiar, al
+ * cancelar o proceder con el formulario de registro.
+ */
 function eliminaMsgValidacion(){
+    //Limpiamos el contenido de loe mensajes
     document.getElementById("errorLogin").innerHTML = "";
+    document.getElementById("errorLogin2").innerHTML = "";
     document.getElementById("errorPass2").innerHTML = "";
     document.getElementById("errorMail").innerHTML = "";
 }
 
-function mostrarEdicion(login){
-    var respuesta = xajax_editarUsuario(login);
+/**
+ * Función que elimina los mensajes de validacion (ya sea guardando un registro
+ * editado o cancelando la acción).
+ */
+function eliminaMsgEdicion(){
+    //Vaciamos el contenido del formulario por si existieran datos previos
+    document.getElementById("form-editar").reset();
+    //Limpiamos el contenido de los mensajes
+    document.getElementById("errorLoginE").innerHTML = "";
+    document.getElementById("errorLogin2E").innerHTML = "";
+    document.getElementById("errorPass2E").innerHTML = "";
+    document.getElementById("errorMailE").innerHTML = "";
 }
+
+
+

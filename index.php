@@ -22,6 +22,7 @@
 require_once ("include/fxajax.inc.php");
 
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,6 +51,7 @@ require_once ("include/fxajax.inc.php");
             <div class="form-group">
                 <input type="text" id="login" name="login" class="form-control" maxlength="20" placeholder="Nombre de usuario">
                 <span id="errorLogin" class="text-danger small"></span>
+                <span id="errorLogin2" class="text-danger small"></span>
             </div>
             <div class="form-group">
                 <input type="password" id="pass1" name="pass1" class="form-control" maxlength="128" placeholder="Password">
@@ -62,31 +64,43 @@ require_once ("include/fxajax.inc.php");
                 <input type="email" id="email" name="email" class="form-control" maxlength="50" placeholder="Correo electrónico">
                 <span id="errorMail" class="text-danger small"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group text-center">
                 <button class="btn btn-warning" type=reset onclick="eliminaMsgValidacion()">Limpiar campos</button>
-                <button class="btn btn-primary" type="submit" id="email">Registrar</button>
+                <button class="btn btn-primary" type="submit">Registrar</button>
             </div>
         </form>
     </div>
     
     <div id="modificar" class="container reg-hidden" >
         <h2>Editar usuario</h2>
-        <form role="form" action="javascript:void(null);">
+        <form id="form-editar" role="form" action="javascript:void(null);" onsubmit="guardaUser();">
             <div class="form-group">
-                <input type="text" id="login" class="form-control" placeholder="Nombre de usuario">
+                <input type="text" id="loginE" name="loginE" class="form-control" maxlength="20" placeholder="Nombre de usuario">
+                <span id="errorLoginE" class="text-danger small"></span>
+                <span id="errorLogin2E" class="text-danger small"></span>
             </div>
             <div class="form-group">
-                <input type="password" id="pass1" class="form-control" placeholder="Password">
+                <input type="password" id="pass1E" name="pass1E" class="form-control" maxlength="128" placeholder="Password">
             </div>
             <div class="form-group">
-                <input type="password" id="pass2" class="form-control" placeholder="Repita password">
+                <input type="password" id="pass2E" name="pass2E" class="form-control" maxlength="128" placeholder="Repita password">
+                <span id="errorPass2E" class="text-danger small"></span>
             </div>
             <div class="form-group">
-                <input type="email" id="email" class="form-control" placeholder="Correo electrónico">
+                <input type="email" id="emailE" name="emailE" class="form-control" maxlength="50" placeholder="Correo electrónico">
+                <span id="errorMailE" class="text-danger small"></span>
             </div>
             <div class="form-group">
-                <button class="btn btn-primary" type="submit" id="email">Registrar</button>
-                <button class="btn btn-danger">Cancelar</button>
+              <label for="sel1">Bloqueado:</label>
+              <select class="form-control" id="bloqueadoE" name="bloqueadoE">
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="form-group text-center">
+                <input id="loginM" name="loginM" type="hidden">
+                <button id="guardar" class="btn btn-primary" type="submit">Guardar</button>
+                <button class="btn btn-danger" onclick="ocultarEdicion();">Cancelar</button>
             </div>
         </form>
     </div>

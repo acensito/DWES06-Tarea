@@ -29,7 +29,7 @@ Las librerías utilizadas para la tarea deben incluirse dentro del propio proyec
 | --- | --- |
 | Sin calificación | Tarea no entregada. |
 | 0 | La tarea entregada no se corresponde con lo que se  pide.El fichero está corrupto o no se puede abrir.La tarea se ha entregado fuera de plazo.La tarea ha sido copiada.No se han usado arrays para desarrollar la tarea. |
-| 4 | La tarea se realiza usando bases de datos, Sesiones, Cookies, AJAX, etc que se trabajarán en unidades posteriores.La tarea no se puede ejecutar. |
+| 4 | La tarea no se puede ejecutar o se ha modificado la estructura de la base de datos. |
 | 10 | La tarea entregada y que funcione correctamente (que no corresponda a ninguno de los apartados mencionados anteriormente) será corregida según la siguiente valoración: |
 
 ** **
